@@ -1,0 +1,13 @@
+# 로컬 도구·상태
+.omc/
+.DS_Store
+phpmyadmin
+
+# 업로드된 이미지 (실제 운영 데이터) — 폴더와 보안 설정만 저장소에 둔다
+server/uploads/**/*
+!server/uploads/.htaccess
+
+# React 앱 빌드·의존성
+web/node_modules/
+web/dist/
+*.local
