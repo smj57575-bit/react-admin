@@ -1,0 +1,19 @@
+# Apache 배포용 — API 와 업로드 이미지만 열고 내부 파일은 막는다 (개발 서버에서는 router.php 가 같은 역할)
+Options -Indexes
+
+# 숨김 파일·폴더(.omc, .git 등)와 SQL·마이그레이션
+RedirectMatch 404 /\.
+RedirectMatch 404 ^/migrations/
+<FilesMatch "\.(sql|json|md|log)$">
+    Require all denied
+</FilesMatch>
+
+# include 전용 PHP (설정·공통 로직) — 브라우저에서 직접 열 수 없게
+<FilesMatch "^(config|common|router|posts|boards|popups|banners|faqs|notice_bars|schedule|upload|lib|public|admin)\.php$">
+    Require all denied
+</FilesMatch>
+
+# JSON API — /api/... 요청은 모두 api/index.php 로 (React 앱이 부른다)
+RewriteEngine On
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteRule ^api(/.*)?$ api/index.php [L,QSA]
