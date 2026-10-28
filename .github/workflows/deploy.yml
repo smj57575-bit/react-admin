@@ -1,0 +1,63 @@
+# GitHub Pages 배포 — main 에 push 하면 React 앱을 "데모 모드"로 빌드해서 올린다
+# Pages 에는 PHP·MySQL 이 없어서, 데이터는 브라우저 안의 데모 서버(web/src/api/demo/)가 답한다
+# 처음 한 번: 저장소 Settings → Pages → Source 를 "GitHub Actions" 로 바꿔야 한다
+name: Deploy demo to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:   # Actions 탭에서 손으로 다시 배포할 때
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 배포가 겹치면 앞의 것을 기다렸다가 차례로 (진행 중인 배포는 취소하지 않는다)
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - run: npm ci
+
+      # VITE_DEMO=true: api() 가 PHP 대신 데모 서버를 부른다 / BASE_PATH: https://아이디.github.io/react-admin/ 아래에서 동작
+      - name: Build (demo mode)
+        run: npm run build
+        env:
+          VITE_DEMO: 'true'
+          BASE_PATH: /react-admin/
+
+      # Pages 는 없는 주소(/react-admin/boards/free 등)에 404.html 을 준다 → index.html 과 같게 두면 React 라우터가 그 주소를 그린다
+      - name: SPA fallback (404.html)
+        run: cp dist/index.html dist/404.html
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
