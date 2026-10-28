@@ -5,6 +5,7 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router'
 import { ApiError } from '../../api/client'
 import { useCreatePost, usePost, useUpdatePost } from '../../api/site'
 import type { Board, UserPostInput } from '../../api/types'
+import { DemoNote } from '../../components/DemoNote'
 import { FormErrors } from '../../components/FormErrors'
 import { ErrorState, Loading } from '../../components/QueryState'
 import { useLayoutData } from '../../layouts/SiteLayout'
@@ -107,6 +108,7 @@ function PostForm({ board, initial, mutation, cancelTo, onSubmit, isEdit = false
       <section className="page-body">
         <div className="container">
           <form className="form-card" onSubmit={submit}>
+            <DemoNote />
             <FormErrors error={mutation.error} className="alert" />
 
             <label className="form-field">

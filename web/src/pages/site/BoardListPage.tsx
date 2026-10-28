@@ -5,6 +5,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, Navigate, useParams, useSearchParams } from 'react-router'
 import { ApiError } from '../../api/client'
 import { useBoardPosts } from '../../api/site'
+import { DemoNote } from '../../components/DemoNote'
 import { Pager } from '../../components/Pager'
 import { ErrorState, Loading } from '../../components/QueryState'
 import { useLayoutData } from '../../layouts/SiteLayout'
@@ -69,6 +70,8 @@ function BoardList({ boardKey }: { boardKey: string }) {
             <BoardSearch key={boardKey + q} q={q} />
           </div>
 
+          {/* 방문자가 글을 쓸 수 있는 게시판(자유게시판 등)에서만 안내 */}
+          {board.can_write && <DemoNote />}
           <div className="board-meta">
             <span>
               총 <strong>{total}</strong>건{q && ` · "${q}" 검색 결과`}
