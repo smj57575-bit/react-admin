@@ -1,0 +1,7 @@
+# 업로드 폴더 — 이미지 외 파일은 열지 않고, PHP 는 절대 실행하지 않는다
+<FilesMatch "\.(php\d?|phtml|phar|html?|svg)$">
+    Require all denied
+</FilesMatch>
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
