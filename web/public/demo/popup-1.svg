@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 540">
+  <!-- 데모 이미지 팝업 — 그라데이션 + 한글 제목 -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F76707"/>
+      <stop offset="1" stop-color="#E03131"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="540" fill="url(#bg)"/>
+  <circle cx="600" cy="110" r="150" fill="#FFFFFF" fill-opacity="0.12"/>
+  <circle cx="110" cy="470" r="110" fill="#FFE8A3" fill-opacity="0.25"/>
+  <g font-family="Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" fill="#FFFFFF">
+    <text x="56" y="120" font-size="28" font-weight="600" fill-opacity="0.85">이미지 팝업 예시</text>
+    <text x="56" y="250" font-size="64" font-weight="800">가을 업데이트</text>
+    <text x="56" y="330" font-size="64" font-weight="800">미리 보기</text>
+    <text x="56" y="420" font-size="26" font-weight="500" fill-opacity="0.9">관리자 &gt; 팝업 관리에서 바꿔 보세요</text>
+  </g>
+</svg>

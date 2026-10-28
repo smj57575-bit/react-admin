@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useState, type CSSProperties } from 'react'
 import { Link, NavLink, Outlet, ScrollRestoration, useLocation, useParams } from 'react-router'
-import { api } from '../api/client'
+import { api, IS_DEMO } from '../api/client'
 import { useSession } from '../api/session'
 import type { LayoutResponse, LiveNoticeBar } from '../api/types'
 import { useStylesheet } from '../lib/useStylesheet'
@@ -33,6 +33,8 @@ export default function SiteLayout() {
           <Link to="/" className="brand" onClick={() => isHome && window.scrollTo({ top: 0 })}>
             <span className="brand__mark" />
             Test Dev
+            {/* 데모 빌드(GitHub Pages)임을 알린다 — 데이터가 이 브라우저에만 저장된다는 신호 */}
+            {IS_DEMO && <span className="demo-badge" title="데모: 바꾼 내용은 이 브라우저에만 저장돼요">데모</span>}
           </Link>
           <nav className="site-nav" aria-label="주 메뉴">
             <NavLink to="/" end className={({ isActive }) => `site-nav__link${isActive ? ' is-current' : ''}`}>

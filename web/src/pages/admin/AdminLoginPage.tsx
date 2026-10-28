@@ -1,6 +1,7 @@
 // 관리자 로그인 — 성공하면 원래 가려던 관리자 화면(없으면 글 관리)으로
 import { useState, type FormEvent } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router'
+import { IS_DEMO } from '../../api/client'
 import { useLogin, useSession } from '../../api/session'
 import { FormErrors } from '../../components/FormErrors'
 import { AdminShell } from '../../layouts/AdminLayout'
@@ -27,6 +28,7 @@ export default function AdminLoginPage() {
       <div className="login">
         <form className="panel" onSubmit={submit}>
           <h2 className="login__title">관리자 로그인</h2>
+          {IS_DEMO && <div className="alert alert--info">데모 계정: admin / admin1234 (데이터는 이 브라우저에만 저장돼요)</div>}
           <FormErrors error={login.error} />
           <div className="field">
             <label htmlFor="loginId">아이디</label>

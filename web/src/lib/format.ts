@@ -15,5 +15,14 @@ export function schedulePeriod(row: { starts_at: string | null; ends_at: string 
   return `${formatDateTime(row.starts_at)} ~ ${formatDateTime(row.ends_at)}`
 }
 
-/** 업로드 이미지 경로 'uploads/popups/ab.png' → '/uploads/popups/ab.png' */
-export const uploadUrl = (path: string) => '/' + path
+/**
+ * 앱 안의 주소 — 라우터를 거치지 않는 <a href>, <img src> 용. 앱이 하위 경로에 있으면 그 경로를 앞에 붙인다
+ * appUrl('#faq') → '/#faq' (보통) / '/react-admin/#faq' (GitHub Pages)
+ */
+export const appUrl = (path = '') => import.meta.env.BASE_URL + path.replace(/^\//, '')
+
+/**
+ * 업로드 이미지 경로 'uploads/popups/ab.png' → '/uploads/popups/ab.png'
+ * 데모 모드의 data: 주소(브라우저에 저장한 이미지)와 http(s) 주소는 그대로 둔다
+ */
+export const uploadUrl = (path: string) => (/^(data:|https?:\/\/)/i.test(path) ? path : appUrl(path))

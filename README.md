@@ -33,8 +33,17 @@ web/src/
   components/ 공통 부품: 로딩·오류, 폼 오류, 페이지네이션, 토스트, 삭제 확인, 스위치
   layouts/    사용자 레이아웃, 관리자 레이아웃(로그인 확인)
   pages/      site/ 사용자 화면, admin/ 관리자 화면
-web/docs/     학습 노트 01~04
+web/docs/     학습 노트 01~05
 ```
+
+## 데모
+
+**https://smj57575-bit.github.io/react-admin/** — PHP·MySQL 없이 브라우저 안에서 돌아가는 데모예요.
+
+- 관리자 계정: `admin` / `admin1234` (데모에 미리 있는 방문자 글 비밀번호는 `1234`)
+- 바꾼 데이터는 그 브라우저(localStorage)에만 저장돼요. 관리자 사이드바의 "데모 데이터 초기화"로 처음 상태로 되돌릴 수 있어요
+- `main` 에 push 하면 GitHub Actions(`.github/workflows/deploy.yml`)가 데모 모드로 빌드해서 올려요. 처음 한 번만 저장소 **Settings → Pages → Source: GitHub Actions** 로 바꿔 두세요
+- 어떻게 동작하는지: `web/docs/05-demo-mode.md`. 로컬에서는 `cd web && npm run dev:demo`
 
 ## 실행
 

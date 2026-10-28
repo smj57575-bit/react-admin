@@ -5,7 +5,7 @@ import { useDeleteSchedule, useScheduleList, useToggleSchedule } from '../../api
 import { ErrorState, Loading } from '../../components/QueryState'
 import { Switch } from '../../components/Switch'
 import { useAdminTitle } from '../../layouts/AdminLayout'
-import { schedulePeriod, uploadUrl } from '../../lib/format'
+import { appUrl, schedulePeriod, uploadUrl } from '../../lib/format'
 import { DeleteConfirm, type DeleteTarget } from './DeleteConfirm'
 import { ScheduleStats } from './schedule/ScheduleStats'
 import { StatusBadge } from './schedule/StatusBadge'
@@ -30,7 +30,7 @@ export default function PopupsPage() {
             팝업 목록 <small>총 {data.rows.length}개 · 순서가 작은 팝업부터 홈페이지에 표시됩니다</small>
           </h2>
           <div className="btn-row">
-            <a href="/" className="btn btn--ghost" target="_blank" rel="noopener">
+            <a href={appUrl()} className="btn btn--ghost" target="_blank" rel="noopener">
               홈페이지 보기
             </a>
             <Link to="/admin/popups/new" className="btn btn--primary">

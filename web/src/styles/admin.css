@@ -159,6 +159,9 @@ a:hover { color: var(--primary-hover); }
 .alert ul { margin: 0; padding-left: 18px; }
 .alert--danger { background: oklch(0.96 0.03 25); color: oklch(0.45 0.17 25); }
 .alert--warning { background: var(--warning-soft); color: oklch(0.45 0.1 85); }
+.alert--info { background: var(--primary-tint); color: oklch(0.42 0.14 285); }
+/* 데모 빌드 표시 (GitHub Pages) */
+.demo-badge { padding: 1px 8px; border-radius: 999px; background: var(--primary-soft); color: var(--primary); font-size: 11px; font-weight: 700; letter-spacing: 0; }
 
 /* ---------- 페이지네이션 ---------- */
 .pager { display: flex; justify-content: center; gap: 4px; margin-top: 20px; }

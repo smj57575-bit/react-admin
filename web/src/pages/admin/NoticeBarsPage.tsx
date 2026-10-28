@@ -5,7 +5,7 @@ import { useDeleteSchedule, useScheduleList, useToggleSchedule } from '../../api
 import { ErrorState, Loading } from '../../components/QueryState'
 import { Switch } from '../../components/Switch'
 import { useAdminTitle } from '../../layouts/AdminLayout'
-import { schedulePeriod } from '../../lib/format'
+import { appUrl, schedulePeriod } from '../../lib/format'
 import { DeleteConfirm, type DeleteTarget } from './DeleteConfirm'
 import { ScheduleStats } from './schedule/ScheduleStats'
 import { StatusBadge } from './schedule/StatusBadge'
@@ -33,7 +33,7 @@ export default function NoticeBarsPage() {
             띠배너 목록 <small>노출 중인 것이 여러 개면 순서가 가장 앞선 하나만 홈 맨 위에 보여요</small>
           </h2>
           <div className="btn-row">
-            <a href="/" className="btn btn--ghost" target="_blank" rel="noopener">
+            <a href={appUrl()} className="btn btn--ghost" target="_blank" rel="noopener">
               홈페이지 보기
             </a>
             <Link to="/admin/notice-bars/new" className="btn btn--primary">

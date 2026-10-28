@@ -13,6 +13,9 @@ const page = (load: () => Promise<{ default: ComponentType }>) => ({
 // 화면 파일을 처음 불러오는 아주 짧은 순간에는 아무것도 그리지 않는다 (각 레이아웃이 로딩 표시를 따로 한다)
 const HydrateFallback = () => null
 
+// 앱이 하위 경로(/react-admin/)에 올라가도 아래 주소표는 '/' 기준 그대로 쓴다. 라우터가 앞에 basename 을 붙여 준다
+const basename = import.meta.env.BASE_URL.replace(/\/$/, '') || '/'
+
 export const router = createBrowserRouter([
   {
     // 사용자 화면
@@ -58,4 +61,4 @@ export const router = createBrowserRouter([
       { path: '*', element: <Navigate to="/admin/posts" replace /> },
     ],
   },
-])
+], { basename })

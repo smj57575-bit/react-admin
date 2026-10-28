@@ -5,6 +5,7 @@ import { useAdminFaqs, useDeleteFaq, useToggleFaq } from '../../api/admin'
 import { ErrorState, Loading } from '../../components/QueryState'
 import { Switch } from '../../components/Switch'
 import { useAdminTitle } from '../../layouts/AdminLayout'
+import { appUrl } from '../../lib/format'
 import { DeleteConfirm, type DeleteTarget } from './DeleteConfirm'
 
 const categoryQuery = (category: string | null) => (category === null ? '' : '?' + new URLSearchParams({ category }))
@@ -43,7 +44,7 @@ export default function FaqsPage() {
             {category ?? '전체 FAQ'} <small>홈페이지에는 분류별로, 순서가 작은 것부터 표시됩니다</small>
           </h2>
           <div className="btn-row">
-            <a href="/#faq" className="btn btn--ghost" target="_blank" rel="noopener">
+            <a href={appUrl('#faq')} className="btn btn--ghost" target="_blank" rel="noopener">
               홈페이지 보기
             </a>
             <Link to={'/admin/faqs/new' + categoryQuery(category)} className="btn btn--primary">

@@ -21,7 +21,13 @@ export function setCsrfToken(token: string) {
   csrfToken = token
 }
 
-type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
+export type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
+
+/**
+ * 데모 모드 (GitHub Pages 처럼 PHP 서버가 없는 곳) — 빌드할 때 VITE_DEMO=true 를 주면 켜진다
+ * 빌드 시점에 true/false 로 바뀌는 상수라서, 일반 빌드에서는 아래 데모 코드(import)가 통째로 빠진다
+ */
+export const IS_DEMO = import.meta.env.VITE_DEMO === 'true'
 
 interface RequestOptions {
   method?: Method
@@ -33,16 +39,45 @@ interface RequestOptions {
   query?: Record<string, string | number | null | undefined>
 }
 
-export async function api<T>(path: string, { method = 'GET', json, form, query }: RequestOptions = {}): Promise<T> {
-  const headers: Record<string, string> = { Accept: 'application/json' }
-  if (method !== 'GET') headers['X-CSRF-Token'] = csrfToken
-  if (json !== undefined) headers['Content-Type'] = 'application/json'
+/** 서버(또는 데모 서버)가 돌려준 상태 코드와 JSON 본문 */
+export interface RawResponse {
+  status: number
+  data: { ok?: boolean; message?: string; errors?: string[] } | null
+}
 
+export async function api<T>(path: string, { method = 'GET', json, form, query }: RequestOptions = {}): Promise<T> {
   const search = new URLSearchParams()
   for (const [k, v] of Object.entries(query ?? {})) {
     if (v !== null && v !== undefined && v !== '') search.set(k, String(v))
   }
-  const url = '/api' + path + (search.size ? '?' + search : '')
+
+  let res: RawResponse
+  if (IS_DEMO) {
+    // 데모: fetch 대신 브라우저 안의 가짜 서버에 같은 요청을 넘긴다. 처음 한 번만 데모 코드를 내려받는다(dynamic import)
+    const { demoRequest } = await import('./demo/handler')
+    res = await demoRequest({ method, path, search, json, form })
+  } else {
+    res = await httpRequest('/api' + path + (search.size ? '?' + search : ''), method, json, form)
+  }
+
+  const { status, data } = res
+  if (status < 200 || status >= 300 || !data?.ok) {
+    throw new ApiError(data?.message ?? '요청을 처리하지 못했어요.', status, data?.errors ?? [])
+  }
+  return data as T
+}
+
+/** 데모 데이터를 처음 상태로 (관리자 사이드바의 "데모 데이터 초기화"). 데모 코드를 부르는 곳을 이 파일 하나로 모아야 일반 빌드에서 깔끔히 빠진다 */
+export async function resetDemoData() {
+  if (!IS_DEMO) return
+  const { resetDemoDb } = await import('./demo/db')
+  resetDemoDb()
+}
+
+async function httpRequest(url: string, method: Method, json: unknown, form: FormData | undefined): Promise<RawResponse> {
+  const headers: Record<string, string> = { Accept: 'application/json' }
+  if (method !== 'GET') headers['X-CSRF-Token'] = csrfToken
+  if (json !== undefined) headers['Content-Type'] = 'application/json'
 
   let res: Response
   try {
@@ -55,12 +90,7 @@ export async function api<T>(path: string, { method = 'GET', json, form, query }
   } catch {
     throw new ApiError('서버에 연결하지 못했어요. 인터넷 연결이나 API 서버를 확인해 주세요.', 0)
   }
-
-  const data = await res.json().catch(() => null)
-  if (!res.ok || !data?.ok) {
-    throw new ApiError(data?.message ?? '요청을 처리하지 못했어요.', res.status, data?.errors ?? [])
-  }
-  return data as T
+  return { status: res.status, data: await res.json().catch(() => null) }
 }
 
 /**

@@ -2,10 +2,13 @@
 // 로그인하지 않았으면 로그인 화면으로 보낸다. (화면 보호는 편의일 뿐, 실제 권한은 API 가 요청마다 확인한다)
 import { createContext, useContext, useEffect, useState, type FormEvent, type ReactNode } from 'react'
 import { Link, Navigate, NavLink, Outlet, useLocation, useNavigate, useSearchParams } from 'react-router'
+import { IS_DEMO } from '../api/client'
 import { useLogout, useSession } from '../api/session'
+import { DemoResetButton } from '../components/DemoReset'
 import { Icon, type IconName } from '../components/Icon'
 import { Loading } from '../components/QueryState'
 import { ToastProvider } from '../components/Toast'
+import { appUrl } from '../lib/format'
 import { usePageTitle } from '../lib/usePageTitle'
 import { useStylesheet } from '../lib/useStylesheet'
 import adminCss from '../styles/admin.css?inline'
@@ -75,6 +78,7 @@ export function AdminShell({ title, adminName, defaultPassword, children }: Admi
           <aside className="sidebar">
             <Link className="sidebar__logo" to="/">
               <Icon name="logo" /> 관리자
+              {IS_DEMO && <span className="demo-badge">데모</span>}
             </Link>
             <nav className="sidebar__nav">
               {adminName ? (
@@ -90,9 +94,10 @@ export function AdminShell({ title, adminName, defaultPassword, children }: Admi
               )}
             </nav>
             <div className="sidebar__foot">
-              <a className="nav-item" href="/" target="_blank" rel="noopener">
+              <a className="nav-item" href={appUrl()} target="_blank" rel="noopener">
                 <Icon name="home" /> 홈페이지 보기
               </a>
+              {IS_DEMO && adminName && <DemoResetButton />}
               {adminName && (
                 <button type="button" className="nav-item" onClick={() => logout.mutate(undefined, { onSuccess: () => navigate('/admin/login') })}>
                   <Icon name="logout" /> 로그아웃

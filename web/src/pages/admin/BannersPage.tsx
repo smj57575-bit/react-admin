@@ -5,7 +5,7 @@ import { useDeleteSchedule, useScheduleList, useToggleSchedule } from '../../api
 import { ErrorState, Loading } from '../../components/QueryState'
 import { Switch } from '../../components/Switch'
 import { useAdminTitle } from '../../layouts/AdminLayout'
-import { schedulePeriod, uploadUrl } from '../../lib/format'
+import { appUrl, schedulePeriod, uploadUrl } from '../../lib/format'
 import { DeleteConfirm, type DeleteTarget } from './DeleteConfirm'
 import { ScheduleStats } from './schedule/ScheduleStats'
 import { StatusBadge } from './schedule/StatusBadge'
@@ -30,7 +30,7 @@ export default function BannersPage() {
             메인 배너 <small>노출 중인 배너가 홈페이지 상단에서 순서대로 넘어갑니다 · 없으면 기본 소개 문구가 보입니다</small>
           </h2>
           <div className="btn-row">
-            <a href="/" className="btn btn--ghost" target="_blank" rel="noopener">
+            <a href={appUrl()} className="btn btn--ghost" target="_blank" rel="noopener">
               홈페이지 보기
             </a>
             <Link to="/admin/banners/new" className="btn btn--primary">
