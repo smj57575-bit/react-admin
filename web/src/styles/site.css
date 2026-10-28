@@ -328,3 +328,5 @@ a.popup__body:hover .popup__title { color: var(--primary); }
 .state .button { margin-top: 16px; }
 .state__spinner { display: inline-block; width: 24px; height: 24px; border: 2.5px solid var(--line); border-top-color: var(--ink); border-radius: 50%; animation: spin .8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+/* 데모 안내 (공유 DB 가 없어서 쓴 글은 이 브라우저에만 보인다) */
+.demo-note { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
